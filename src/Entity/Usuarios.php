@@ -9,8 +9,13 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name:"usuarios")]
-#[ORM\Entity(repositoryClass: UsuariosRepository::class)]
+/**
+ * Usuarios
+ *
+ * @ORM\Table(name="usuarios", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
+ * @ORM\Entity()
+ *
+ * */
 class Usuarios
 {
     /**

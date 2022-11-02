@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UsuariosController extends AbstractController
 {
-    #[Route('/usuarios', name: 'app_usuarios', methods: 'GET')]
+    #[Route('/usuarios', name: 'app_usuarios')]
     public function index(EntityManagerInterface $em): JsonResponse
     {
         $usuarios = $em->getRepository(Usuarios::class)->findAll();
