@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,6 +49,59 @@ class Juegos
      * @ORM\Column(name="fecha_lanzamiento", type="datetime", nullable=true)
      */
     private $fechaLanzamiento;
+
+    public function getIdJuego(): ?int
+    {
+        return $this->idJuego;
+    }
+
+    public function getImagen(): ?string
+    {
+        return $this->imagen;
+    }
+
+    public function setImagen(string $imagen): self
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
+
+    public function getNombreJuego(): ?string
+    {
+        return $this->nombreJuego;
+    }
+
+    public function setNombreJuego(string $nombreJuego): self
+    {
+        $this->nombreJuego = $nombreJuego;
+
+        return $this;
+    }
+
+    public function getTipoJuego(): ?string
+    {
+        return $this->tipoJuego;
+    }
+
+    public function setTipoJuego(string $tipoJuego): self
+    {
+        $this->tipoJuego = $tipoJuego;
+
+        return $this;
+    }
+
+    public function getFechaLanzamiento(): ?\DateTimeInterface
+    {
+        return $this->fechaLanzamiento;
+    }
+
+    public function setFechaLanzamiento(?\DateTimeInterface $fechaLanzamiento): self
+    {
+        $this->fechaLanzamiento = $fechaLanzamiento;
+
+        return $this;
+    }
 
 
 }

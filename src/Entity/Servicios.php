@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -65,6 +68,86 @@ class Servicios
     public function __construct()
     {
         $this->idUsuario = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getIdServicio(): ?int
+    {
+        return $this->idServicio;
+    }
+
+    public function getNombreJuego(): ?string
+    {
+        return $this->nombreJuego;
+    }
+
+    public function setNombreJuego(string $nombreJuego): self
+    {
+        $this->nombreJuego = $nombreJuego;
+
+        return $this;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion(string $descripcion): self
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getFechaInicio(): ?\DateTimeInterface
+    {
+        return $this->fechaInicio;
+    }
+
+    public function setFechaInicio(?\DateTimeInterface $fechaInicio): self
+    {
+        $this->fechaInicio = $fechaInicio;
+
+        return $this;
+    }
+
+    public function getIdJuego(): ?Juegos
+    {
+        return $this->idJuego;
+    }
+
+    public function setIdJuego(?Juegos $idJuego): self
+    {
+        $this->idJuego = $idJuego;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Usuarios>
+     */
+    public function getIdUsuario(): Collection
+    {
+        return $this->idUsuario;
+    }
+
+    public function addIdUsuario(Usuarios $idUsuario): self
+    {
+        if (!$this->idUsuario->contains($idUsuario)) {
+            $this->idUsuario->add($idUsuario);
+            $idUsuario->addIdServicio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdUsuario(Usuarios $idUsuario): self
+    {
+        if ($this->idUsuario->removeElement($idUsuario)) {
+            $idUsuario->removeIdServicio($this);
+        }
+
+        return $this;
     }
 
 }

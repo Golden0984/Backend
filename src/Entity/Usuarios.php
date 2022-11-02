@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
+use App\Repository\UsuariosRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Usuarios
- *
- * @ORM\Table(name="usuarios", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
- * @ORM\Entity
- */
+#[ORM\Table(name:"usuarios")]
+#[ORM\Entity(repositoryClass: UsuariosRepository::class)]
 class Usuarios
 {
     /**
@@ -24,7 +25,7 @@ class Usuarios
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_usuario", type="string", length=500, nullable=false)
+     * @ORM\Column(name="nombre_usuario", type="string", length=200, nullable=false)
      */
     private $nombreUsuario;
 
@@ -38,7 +39,7 @@ class Usuarios
     /**
      * @var string
      *
-     * @ORM\Column(name="nickname", type="string", length=500, nullable=false)
+     * @ORM\Column(name="nickname", type="string", length=200, nullable=false)
      */
     private $nickname;
 
@@ -93,6 +94,119 @@ class Usuarios
     {
         $this->idTorneo = new \Doctrine\Common\Collections\ArrayCollection();
         $this->idServicio = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getIdUsuario(): ?int
+    {
+        return $this->idUsuario;
+    }
+
+    public function getNombreUsuario(): ?string
+    {
+        return $this->nombreUsuario;
+    }
+
+    public function setNombreUsuario(string $nombreUsuario): self
+    {
+        $this->nombreUsuario = $nombreUsuario;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname(string $nickname): self
+    {
+        $this->nickname = $nickname;
+
+        return $this;
+    }
+
+    public function getPwd(): ?string
+    {
+        return $this->pwd;
+    }
+
+    public function setPwd(string $pwd): self
+    {
+        $this->pwd = $pwd;
+
+        return $this;
+    }
+
+    public function getFechaCreacion(): ?\DateTimeInterface
+    {
+        return $this->fechaCreacion;
+    }
+
+    public function setFechaCreacion(?\DateTimeInterface $fechaCreacion): self
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Torneos>
+     */
+    public function getIdTorneo(): Collection
+    {
+        return $this->idTorneo;
+    }
+
+    public function addIdTorneo(Torneos $idTorneo): self
+    {
+        if (!$this->idTorneo->contains($idTorneo)) {
+            $this->idTorneo->add($idTorneo);
+        }
+
+        return $this;
+    }
+
+    public function removeIdTorneo(Torneos $idTorneo): self
+    {
+        $this->idTorneo->removeElement($idTorneo);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Servicios>
+     */
+    public function getIdServicio(): Collection
+    {
+        return $this->idServicio;
+    }
+
+    public function addIdServicio(Servicios $idServicio): self
+    {
+        if (!$this->idServicio->contains($idServicio)) {
+            $this->idServicio->add($idServicio);
+        }
+
+        return $this;
+    }
+
+    public function removeIdServicio(Servicios $idServicio): self
+    {
+        $this->idServicio->removeElement($idServicio);
+
+        return $this;
     }
 
 }
