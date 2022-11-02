@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Usuarios;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Usuarios>
+ * @extends ServiceEntityRepository<Usuario>
  *
- * @method Usuarios|null find($id, $lockMode = null, $lockVersion = null)
- * @method Usuarios|null findOneBy(array $criteria, array $orderBy = null)
- * @method Usuarios[]    findAll()
- * @method Usuarios[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Usuario|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Usuario|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Usuario[]    findAll()
+ * @method Usuario[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UsuariosRepository extends ServiceEntityRepository
+class UsuarioRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Usuarios::class);
+        parent::__construct($registry, Usuario::class);
     }
 
-    public function save(Usuarios $entity, bool $flush = false): void
+    public function save(Usuario $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class UsuariosRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Usuarios $entity, bool $flush = false): void
+    public function remove(Usuario $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class UsuariosRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Usuarios[] Returns an array of Usuarios objects
+//     * @return Usuario[] Returns an array of Usuario objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class UsuariosRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Usuarios
+//    public function findOneBySomeField($value): ?Usuario
 //    {
 //        return $this->createQueryBuilder('u')
 //            ->andWhere('u.exampleField = :val')
