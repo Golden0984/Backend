@@ -2,52 +2,65 @@
 
 namespace App\Entity;
 
+use App\Repository\JuegosRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Juegos
- *
- * @ORM\Table(name="juegos")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: JuegosRepository::class)]
 class Juegos
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_juego", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idJuego;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="imagen", type="string", length=100, nullable=false)
-     */
-    private $imagen;
+    #[ORM\Column(length: 255)]
+    private ?string $nombre_juego = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nombre_juego", type="string", length=500, nullable=false)
-     */
-    private $nombreJuego;
+    #[ORM\Column(length: 255)]
+    private ?string $descripcion = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tipo_juego", type="string", length=200, nullable=false)
-     */
-    private $tipoJuego;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $fecha_lanzamiento = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="fecha_lanzamiento", type="datetime", nullable=true)
-     */
-    private $fechaLanzamiento;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
+    public function getNombreJuego(): ?string
+    {
+        return $this->nombre_juego;
+    }
 
+    public function setNombreJuego(string $nombre_juego): self
+    {
+        $this->nombre_juego = $nombre_juego;
+
+        return $this;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion(string $descripcion): self
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getFechaLanzamiento(): ?\DateTimeInterface
+    {
+        return $this->fecha_lanzamiento;
+    }
+
+    public function setFechaLanzamiento(\DateTimeInterface $fecha_lanzamiento): self
+    {
+        $this->fecha_lanzamiento = $fecha_lanzamiento;
+
+        return $this;
+    }
 }
