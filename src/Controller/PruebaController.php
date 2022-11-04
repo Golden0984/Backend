@@ -13,6 +13,6 @@ class PruebaController extends AbstractController
     public function index(UsuariosRepository $user): JsonResponse
     {
         $usuarios = $user->findAll();
-        return $this->json($usuarios);
+        return dd($usuarios);
     }
 }
