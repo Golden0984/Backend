@@ -21,9 +21,7 @@ class UserController extends AbstractController
     public function index(UserRepository $UserRepository): JsonResponse
     {
        $usuarios = $UserRepository->findAll();
-        return $this->json($usuarios,200,[],[ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER =>function() {
-            return null;
-        }]);
+        return $this->json($usuarios,200,[],[ObjectNormalizer::IGNORED_ATTRIBUTES => ['memberServices']]);
     }
 
     #[Route('/service', name: 'service')]
