@@ -25,13 +25,13 @@ class Servicios
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha_inicio = null;
 
-    #[ORM\ManyToMany(targetEntity: Usuarios::class, inversedBy: 'id_servicios')]
-    private Collection $id_usuario;
+    #[ORM\ManyToOne(inversedBy: 'servicios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Usuarios $usuarios = null;
 
-    public function __construct()
-    {
-        $this->id_usuario = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'servicios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Juegos $juegos = null;
 
     public function getId(): ?int
     {
@@ -74,26 +74,26 @@ class Servicios
         return $this;
     }
 
-    /**
-     * @return Collection<int, Usuarios>
-     */
-    public function getIdUsuario(): Collection
+    public function getUsuarios(): ?Usuarios
     {
-        return $this->id_usuario;
+        return $this->usuarios;
     }
 
-    public function addIdUsuario(Usuarios $idUsuario): self
+    public function setUsuarios(?Usuarios $usuarios): self
     {
-        if (!$this->id_usuario->contains($idUsuario)) {
-            $this->id_usuario->add($idUsuario);
-        }
+        $this->usuarios = $usuarios;
 
         return $this;
     }
 
-    public function removeIdUsuario(Usuarios $idUsuario): self
+    public function getJuegos(): ?Juegos
     {
-        $this->id_usuario->removeElement($idUsuario);
+        return $this->juegos;
+    }
+
+    public function setJuegos(?Juegos $juegos): self
+    {
+        $this->juegos = $juegos;
 
         return $this;
     }

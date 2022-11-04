@@ -27,14 +27,19 @@ class Usuarios
     #[ORM\Column(length: 255)]
     private ?string $nickname = null;
 
-    #[ORM\ManyToMany(targetEntity: Servicios::class, mappedBy: 'id_usuario')]
-    private Collection $id_servicios;
+    #[ORM\OneToMany(mappedBy: 'usuarios', targetEntity: Servicios::class)]
+    private Collection $servicios;
+
+    #[ORM\ManyToOne(inversedBy: 'usuarios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Torneos $torneo = null;
 
     public function __construct()
     {
-        $this->id_servicios = new ArrayCollection();
+        $this->servicios = new ArrayCollection();
     }
 
+   
     public function getId(): ?int
     {
         return $this->id;
@@ -91,27 +96,43 @@ class Usuarios
     /**
      * @return Collection<int, Servicios>
      */
-    public function getIdServicios(): Collection
+    public function getServicios(): Collection
     {
-        return $this->id_servicios;
+        return $this->servicios;
     }
 
-    public function addIdServicio(Servicios $idServicio): self
+    public function addServicio(Servicios $servicio): self
     {
-        if (!$this->id_servicios->contains($idServicio)) {
-            $this->id_servicios->add($idServicio);
-            $idServicio->addIdUsuario($this);
+        if (!$this->servicios->contains($servicio)) {
+            $this->servicios->add($servicio);
+            $servicio->setUsuarios($this);
         }
 
         return $this;
     }
 
-    public function removeIdServicio(Servicios $idServicio): self
+    public function removeServicio(Servicios $servicio): self
     {
-        if ($this->id_servicios->removeElement($idServicio)) {
-            $idServicio->removeIdUsuario($this);
+        if ($this->servicios->removeElement($servicio)) {
+            // set the owning side to null (unless already changed)
+            if ($servicio->getUsuarios() === $this) {
+                $servicio->setUsuarios(null);
+            }
         }
 
         return $this;
     }
+
+    public function getTorneo(): ?Torneos
+    {
+        return $this->torneo;
+    }
+
+    public function setTorneo(?Torneos $torneo): self
+    {
+        $this->torneo = $torneo;
+
+        return $this;
+    }
+
 }
