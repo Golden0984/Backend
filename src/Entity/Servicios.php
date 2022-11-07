@@ -2,69 +2,99 @@
 
 namespace App\Entity;
 
+use App\Repository\ServiciosRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Servicios
- *
- * @ORM\Table(name="servicios", indexes={@ORM\Index(name="fk1_servi_juego", columns={"ID_juego"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ServiciosRepository::class)]
 class Servicios
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_servicio", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idServicio;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nombre_juego", type="string", length=50, nullable=false)
-     */
-    private $nombreJuego;
+    #[ORM\Column(length: 255)]
+    private ?string $nombre_juego = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=500, nullable=false)
-     */
-    private $descripcion;
+    #[ORM\Column(length: 255)]
+    private ?string $descripcion = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="fecha_inicio", type="datetime", nullable=true)
-     */
-    private $fechaInicio;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $fecha_inicio = null;
 
-    /**
-     * @var \Juegos
-     *
-     * @ORM\ManyToOne(targetEntity="Juegos")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ID_juego", referencedColumnName="ID_juego")
-     * })
-     */
-    private $idJuego;
+    #[ORM\ManyToOne(inversedBy: 'servicios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Usuarios $usuarios = null;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Usuarios", mappedBy="idServicio")
-     */
-    private $idUsuario = array();
+    #[ORM\ManyToOne(inversedBy: 'servicios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Juegos $juegos = null;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function getId(): ?int
     {
-        $this->idUsuario = new \Doctrine\Common\Collections\ArrayCollection();
+        return $this->id;
     }
 
+    public function getNombreJuego(): ?string
+    {
+        return $this->nombre_juego;
+    }
+
+    public function setNombreJuego(string $nombre_juego): self
+    {
+        $this->nombre_juego = $nombre_juego;
+
+        return $this;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion(string $descripcion): self
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getFechaInicio(): ?\DateTimeInterface
+    {
+        return $this->fecha_inicio;
+    }
+
+    public function setFechaInicio(\DateTimeInterface $fecha_inicio): self
+    {
+        $this->fecha_inicio = $fecha_inicio;
+
+        return $this;
+    }
+
+    public function getUsuarios(): ?Usuarios
+    {
+        return $this->usuarios;
+    }
+
+    public function setUsuarios(?Usuarios $usuarios): self
+    {
+        $this->usuarios = $usuarios;
+
+        return $this;
+    }
+
+    public function getJuegos(): ?Juegos
+    {
+        return $this->juegos;
+    }
+
+    public function setJuegos(?Juegos $juegos): self
+    {
+        $this->juegos = $juegos;
+
+        return $this;
+    }
 }

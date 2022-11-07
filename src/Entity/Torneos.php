@@ -2,87 +2,165 @@
 
 namespace App\Entity;
 
+use App\Repository\TorneosRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Torneos
- *
- * @ORM\Table(name="torneos")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: TorneosRepository::class)]
 class Torneos
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_torneo", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idTorneo;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tipo_juego", type="string", length=50, nullable=false)
-     */
-    private $tipoJuego;
+    #[ORM\Column(length: 255)]
+    private ?string $tipo_juego = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nombre_juego", type="string", length=500, nullable=false)
-     */
-    private $nombreJuego;
+    #[ORM\Column(length: 255)]
+    private ?string $nombre_juego = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=500, nullable=false)
-     */
-    private $descripcion;
+    #[ORM\Column(length: 255)]
+    private ?string $descripcion = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="premio", type="integer", nullable=false)
-     */
-    private $premio;
+    #[ORM\Column(length: 255)]
+    private ?string $premio = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="coste_entrada", type="integer", nullable=false)
-     */
-    private $costeEntrada;
+    #[ORM\Column]
+    private ?int $precio = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="fecha_inicio", type="datetime", nullable=true)
-     */
-    private $fechaInicio;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $fecha_inicio = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="fecha_fin", type="datetime", nullable=true)
-     */
-    private $fechaFin;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $fecha_fin = null;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Usuarios", mappedBy="idTorneo")
-     */
-    private $idUsuario = array();
+    #[ORM\OneToMany(mappedBy: 'torneo', targetEntity: Usuarios::class)]
+    private Collection $usuarios;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->idUsuario = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->usuarios = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTipoJuego(): ?string
+    {
+        return $this->tipo_juego;
+    }
+
+    public function setTipoJuego(string $tipo_juego): self
+    {
+        $this->tipo_juego = $tipo_juego;
+
+        return $this;
+    }
+
+    public function getNombreJuego(): ?string
+    {
+        return $this->nombre_juego;
+    }
+
+    public function setNombreJuego(string $nombre_juego): self
+    {
+        $this->nombre_juego = $nombre_juego;
+
+        return $this;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion(string $descripcion): self
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getPremio(): ?string
+    {
+        return $this->premio;
+    }
+
+    public function setPremio(string $premio): self
+    {
+        $this->premio = $premio;
+
+        return $this;
+    }
+
+    public function getPrecio(): ?int
+    {
+        return $this->precio;
+    }
+
+    public function setPrecio(int $precio): self
+    {
+        $this->precio = $precio;
+
+        return $this;
+    }
+
+    public function getFechaInicio(): ?\DateTimeInterface
+    {
+        return $this->fecha_inicio;
+    }
+
+    public function setFechaInicio(\DateTimeInterface $fecha_inicio): self
+    {
+        $this->fecha_inicio = $fecha_inicio;
+
+        return $this;
+    }
+
+    public function getFechaFin(): ?\DateTimeInterface
+    {
+        return $this->fecha_fin;
+    }
+
+    public function setFechaFin(\DateTimeInterface $fecha_fin): self
+    {
+        $this->fecha_fin = $fecha_fin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Usuarios>
+     */
+    public function getUsuarios(): Collection
+    {
+        return $this->usuarios;
+    }
+
+    public function addUsuario(Usuarios $usuario): self
+    {
+        if (!$this->usuarios->contains($usuario)) {
+            $this->usuarios->add($usuario);
+            $usuario->setTorneo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuario(Usuarios $usuario): self
+    {
+        if ($this->usuarios->removeElement($usuario)) {
+            // set the owning side to null (unless already changed)
+            if ($usuario->getTorneo() === $this) {
+                $usuario->setTorneo(null);
+            }
+        }
+
+        return $this;
+    }
 }

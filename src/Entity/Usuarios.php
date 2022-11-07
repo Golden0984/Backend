@@ -2,97 +2,137 @@
 
 namespace App\Entity;
 
+use App\Repository\UsuariosRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Usuarios
- *
- * @ORM\Table(name="usuarios", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: UsuariosRepository::class)]
 class Usuarios
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ID_usuario", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idUsuario;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nombre_usuario", type="string", length=500, nullable=false)
-     */
-    private $nombreUsuario;
+    #[ORM\Column(length: 255)]
+    private ?string $correo = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=100, nullable=false)
-     */
-    private $email;
+    #[ORM\Column(length: 255)]
+    private ?string $nombre = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nickname", type="string", length=500, nullable=false)
-     */
-    private $nickname;
+    #[ORM\Column(length: 255)]
+    private ?string $contrasena = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="pwd", type="string", length=255, nullable=false)
-     */
-    private $pwd;
+    #[ORM\Column(length: 255)]
+    private ?string $nickname = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
-     */
-    private $fechaCreacion;
+    #[ORM\OneToMany(mappedBy: 'usuarios', targetEntity: Servicios::class)]
+    private Collection $servicios;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Torneos", inversedBy="idUsuario")
-     * @ORM\JoinTable(name="participa",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="ID_usuario", referencedColumnName="ID_usuario")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="ID_torneo", referencedColumnName="ID_torneo")
-     *   }
-     * )
-     */
-    private $idTorneo = array();
+    #[ORM\ManyToOne(inversedBy: 'usuarios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Torneos $torneo = null;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Servicios", inversedBy="idUsuario")
-     * @ORM\JoinTable(name="realiza",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="ID_usuario", referencedColumnName="ID_usuario")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="ID_servicio", referencedColumnName="ID_servicio")
-     *   }
-     * )
-     */
-    private $idServicio = array();
-
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->idTorneo = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->idServicio = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->servicios = new ArrayCollection();
+    }
+
+   
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCorreo(): ?string
+    {
+        return $this->correo;
+    }
+
+    public function setCorreo(string $correo): self
+    {
+        $this->correo = $correo;
+
+        return $this;
+    }
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): self
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getContrasena(): ?string
+    {
+        return $this->contrasena;
+    }
+
+    public function setContrasena(string $contrasena): self
+    {
+        $this->contrasena = $contrasena;
+
+        return $this;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname(string $nickname): self
+    {
+        $this->nickname = $nickname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Servicios>
+     */
+    public function getServicios(): Collection
+    {
+        return $this->servicios;
+    }
+
+    public function addServicio(Servicios $servicio): self
+    {
+        if (!$this->servicios->contains($servicio)) {
+            $this->servicios->add($servicio);
+            $servicio->setUsuarios($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServicio(Servicios $servicio): self
+    {
+        if ($this->servicios->removeElement($servicio)) {
+            // set the owning side to null (unless already changed)
+            if ($servicio->getUsuarios() === $this) {
+                $servicio->setUsuarios(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTorneo(): ?Torneos
+    {
+        return $this->torneo;
+    }
+
+    public function setTorneo(?Torneos $torneo): self
+    {
+        $this->torneo = $torneo;
+
+        return $this;
     }
 
 }
