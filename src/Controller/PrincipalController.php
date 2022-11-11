@@ -16,7 +16,10 @@ class PrincipalController extends AbstractController
     public function getAboutUs(AboutUsRepository $aboutUs): JsonResponse
     {
         $integrantes = $aboutUs->findAll();
-        return $this->json($integrantes);
+        return $this->json(array_map(function (AboutUs $integrante) {
+            $integrante->setImagen('http://localhost:8000/' . $integrante->getImagen());
+            return $integrante;
+        }, $integrantes));
     }
 
     #[Route('/contact', name: 'app_contact')]
