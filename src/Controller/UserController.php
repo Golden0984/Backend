@@ -16,9 +16,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 class UserController extends AbstractController
 {
     #[Route('/user', name: 'app_usuario')]
-    public function index(UsuariosRepository $UserRepository): JsonResponse
+    public function index(UsuariosRepository $User): JsonResponse
     {
-        $usuarios = $UserRepository->findAll();
+        $usuarios = $User->findAll();
         return $this->json($usuarios,200,[],[ObjectNormalizer::IGNORED_ATTRIBUTES => ['usuarios']]);
     }
 
