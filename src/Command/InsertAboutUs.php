@@ -60,7 +60,7 @@ class InsertAboutUs extends Command
         if ($this->ifNotExistsInt('Laura Alison')) {
             $integrante3 = new AboutUs();
             $integrante3->setNombre("Laura Alison");
-            $integrante3->setImagen("img/laura.jpeg");
+            $integrante3->setImagen("img/laura.png");
             $integrante3->setTitulacion("Full stack developer");
             $integrante3->setDescripcion("Hello, my name is Laura and I'm in charge of both frontend and backend programming. And I'm superexcited about keeping this project going!");
             $this->aboutUs->save($integrante3, true);
