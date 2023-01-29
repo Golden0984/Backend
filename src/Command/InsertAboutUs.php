@@ -11,6 +11,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+// the "name" and "description" arguments of AsCommand replace the
+// static $defaultName and $defaultDescription properties
 #[AsCommand(
     name: 'app:insert-data',
     description: 'Inserta datos a la BBDD.',
@@ -27,6 +29,9 @@ class InsertAboutUs extends Command
 
     public function ifNotExistsInt(string $nombre): bool
     {
+        // pregunta si lo que devuelve es un objeto o null , y lo compara
+        // cuando sea null -> sera true y creara los datos
+        // cuando sea diferente sera false y no lo crea
         return $this->aboutUs->findOneBy(['nombre' => $nombre]) == null;
     }
 

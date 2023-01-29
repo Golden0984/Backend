@@ -19,7 +19,7 @@ class PrincipalController extends AbstractController
         return $this->json(array_map(function (AboutUs $integrante) {
             $integrante->setImagen('http://localhost:8000/' . $integrante->getImagen());
             return $integrante;
-        }, $integrantes));
+        },$integrantes));
     }
 
     #[Route('/contact', name: 'app_contact')]
